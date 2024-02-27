@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows.Documents;
 
 namespace Dijkstra.Model
@@ -8,8 +9,10 @@ namespace Dijkstra.Model
     {
         public List<Point> Points { get; set; }
         public List<Line> Lines { get; set; }
+        private Line _line;
         public List<string> Path { get; set; }
         public List<List<string>> Paths { get; set; }
+        public Graph Graph { get; set; }
         public Program1()
         {
             Paths = new List<List<string>>();
@@ -42,104 +45,117 @@ namespace Dijkstra.Model
         private List<Line> CreateLines()
         {
             var lines = new List<Line>();
-            //foreach (Point point in Points)
-            //{
-            //    foreach (Point point2 in Points)
-            //    {
-            //        if (point == point2) continue;
-            //        lines.Add(new Line(new double[] { point.X, point2.X }, new double[] { point.Y, point2.Y }, point.Name, point2.Name));
-            //    }
-            //}
             foreach (Point point in Points)
             {
                 foreach (Point point2 in Points)
                 {
-                    if (point.Name.Equals("1"))
-                    {
-                        for (int i = 2; i < 6; i++)
-                        {
-                            if (point2.Name.Equals(i.ToString()) )
-                                lines.Add(new Line(new double[] { point.X, point2.X }, new double[] { point.Y, point2.Y }, point.Name, point2.Name));
-                        }
-                    }
-                    for (int i = 2; i < 6; i++)
-                    {
-                        if (point.Name.Equals(i.ToString()))
-                        {
-                            for (int j = 2; j < 11; j++)
-                            {
-                                if (point2.Name.Equals(j.ToString()) && i != j)
-                                    lines.Add(new Line(new double[] { point.X, point2.X }, new double[] { point.Y, point2.Y }, point.Name, point2.Name));
-                            }
-                        }
-                    }
-                    for (int i = 5; i < 11; i++)
-                    {
-                        if (point.Name.Equals(i.ToString()))
-                        {
-                            for (int j = 11; j < 20; j++)
-                            {
-                                if (point2.Name.Equals(j.ToString()) && i != j)
-                                    lines.Add(new Line(new double[] { point.X, point2.X }, new double[] { point.Y, point2.Y }, point.Name, point2.Name));
-                            }
-                        }
-                    }
-                    for (int i = 12; i < 21; i++)
-                    {
-                        if (point.Name.Equals(i.ToString()))
-                        {
-                            for (int j = 14; j < 21; j++)
-                            {
-                                if (point2.Name.Equals(j.ToString()) && i != j)
-                                    lines.Add(new Line(new double[] { point.X, point2.X }, new double[] { point.Y, point2.Y }, point.Name, point2.Name));
-                            }
-                        }
-                    }
-
+                    if (point == point2) continue;
+                    lines.Add(new Line(new double[] { point.X, point2.X }, new double[] { point.Y, point2.Y }, point.Name, point2.Name));
                 }
             }
+            //foreach (Point point in Points)
+            //{
+            //    foreach (Point point2 in Points)
+            //    {
+            //        if (point.Name.Equals("1"))
+            //        {
+            //            for (int i = 2; i < 6; i++)
+            //            {
+            //                if (point2.Name.Equals(i.ToString()))
+            //                    lines.Add(new Line(new double[] { point.X, point2.X }, new double[] { point.Y, point2.Y }, point.Name, point2.Name));
+            //            }
+            //        }
+            //        for (int i = 2; i < 6; i++)
+            //        {
+            //            if (point.Name.Equals(i.ToString()))
+            //            {
+            //                for (int j = 2; j < 11; j++)
+            //                {
+            //                    if (point2.Name.Equals(j.ToString()) && i != j)
+            //                        lines.Add(new Line(new double[] { point.X, point2.X }, new double[] { point.Y, point2.Y }, point.Name, point2.Name));
+            //                }
+            //            }
+            //        }
+            //        for (int i = 5; i < 11; i++)
+            //        {
+            //            if (point.Name.Equals(i.ToString()))
+            //            {
+            //                for (int j = 11; j < 20; j++)
+            //                {
+            //                    if (point2.Name.Equals(j.ToString()) && i != j)
+            //                        lines.Add(new Line(new double[] { point.X, point2.X }, new double[] { point.Y, point2.Y }, point.Name, point2.Name));
+            //                }
+            //            }
+            //        }
+            //        for (int i = 12; i < 21; i++)
+            //        {
+            //            if (point.Name.Equals(i.ToString()))
+            //            {
+            //                for (int j = 14; j < 21; j++)
+            //                {
+            //                    if (point2.Name.Equals(j.ToString()) && i != j)
+            //                        lines.Add(new Line(new double[] { point.X, point2.X }, new double[] { point.Y, point2.Y }, point.Name, point2.Name));
+            //                }
+            //            }
+            //        }
+
+            //    }
+            //}
             return lines;
         }
 
         public void Start()
         {
-            var g = new Graph();
+            Graph = new Graph();
 
             //добавление вершин
-            InitVertex(g);
+            InitVertex();
 
 
             //добавление ребер
-            InitEdge(g);
+            InitEdge();
 
-            var dijkstra = new Dijkstra(g);
-            Path = dijkstra.FindShortestPath("1", "20");
+            var dijkstra = new Dijkstra(Graph);
+            //Path = dijkstra.FindShortestPath("1", "20");
             foreach (Point point in Points)
             {
                 if (point.Name.Equals("1")) continue;
-                Paths.Add(dijkstra.FindShortestPath("1", point.Name));
+                var path = dijkstra.FindShortestPath("1", point.Name);
+                Paths.Add(path);
+                FindLineClearLenght(path);
+                InitEdge();
             }
             //Console.WriteLine(Path);
             //Console.ReadLine();
         }
 
-        private void InitEdge(Graph g)
+        public void InitEdge()
         {
             foreach (Line line in Lines)
             {
 
-                g.AddEdge(line.StartPointsName, line.EndPointsName, line.Lenght);
+                Graph.AddEdge(line.StartPointsName, line.EndPointsName, line.Lenght);
 
             }
         }
 
-        private void InitVertex(Graph g)
+        private void InitVertex()
         {
             foreach (Point point in Points)
             {
-                g.AddVertex(point.Name);
+                Graph.AddVertex(point.Name);
             }
 
+        }
+        public void FindLineClearLenght(List<string> path)
+        {
+
+            for (int i = 0; i < path.Count - 1; i++)
+            {
+               Lines.Find(e => (e.StartPointsName == path[i] && e.EndPointsName == path[i + 1] 
+                || e.StartPointsName == path[i+1] && e.EndPointsName == path[i])).Lenght = 0;
+                //if (_line != null) _line.Lenght = 0;
+            }
         }
     }
 }

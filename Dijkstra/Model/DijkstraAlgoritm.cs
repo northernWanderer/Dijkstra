@@ -30,7 +30,7 @@ namespace Dijkstra.Model
         void InitInfo()
         {
             infos = new List<GraphVertexInfo>();
-            foreach (var v in graph.Vertices)
+            foreach (GraphVertex v in graph.Vertices)
             {
                 infos.Add(new GraphVertexInfo(v));
             }
@@ -60,7 +60,7 @@ namespace Dijkstra.Model
         /// <returns>Информация о вершине</returns>
         public GraphVertexInfo FindUnvisitedVertexWithMinSum()
         {
-            double minValue = 99999;
+            double minValue = 9999999;
             GraphVertexInfo minVertexInfo = null;
             foreach (var i in infos)
             {
@@ -94,11 +94,11 @@ namespace Dijkstra.Model
         public List<string> FindShortestPath(GraphVertex startVertex, GraphVertex finishVertex)
         {
             InitInfo();
-            var first = GetVertexInfo(startVertex);
+            GraphVertexInfo first = GetVertexInfo(startVertex);
             first.EdgesWeightSum = 0;
             while (true)
             {
-                var current = FindUnvisitedVertexWithMinSum();
+                GraphVertexInfo current = FindUnvisitedVertexWithMinSum();
                 if (current == null)
                 {
                     break;
@@ -119,8 +119,8 @@ namespace Dijkstra.Model
             info.IsUnvisited = false;
             foreach (var e in info.Vertex.Edges)
             {
-                var nextInfo = GetVertexInfo(e.ConnectedVertex);
-                var sum = info.EdgesWeightSum + e.EdgeWeight;
+                GraphVertexInfo nextInfo = GetVertexInfo(e.ConnectedVertex);
+                double sum = info.EdgesWeightSum + e.EdgeWeight;
                 if (sum < nextInfo.EdgesWeightSum)
                 {
                     nextInfo.EdgesWeightSum = sum;

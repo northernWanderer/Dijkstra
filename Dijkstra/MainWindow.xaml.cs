@@ -26,9 +26,9 @@ namespace Dijkstra
     {
         public static readonly DependencyProperty LegendProperty;
         private Program1 Program1 { get; set; }
-        public string[] Legend
+        public List<string> Legend
         {
-            get => (string[])GetValue(LegendProperty);
+            get => (List<string>)GetValue(LegendProperty);
             set => SetValue(LegendProperty, value);
         }
         static MainWindow()
@@ -57,9 +57,12 @@ namespace Dijkstra
 
                 ScottPlot.Plottables.Scatter scatter = WpfPlot1.Plot.Add.Scatter(line.Xpoints, line.Ypoints);
                 scatter.Color = ScottPlot.Color.FromHex("c51d34");
+                //Program1.FindLineClearLenght(path);
+                //Program1.InitEdge();
 
             }
-            //Legend = Program1.Path;
+            //Legend 
+            //List<string> path1 = Program1.Path;
             WpfPlot1.Refresh();
             InitializeComponent();
         }
