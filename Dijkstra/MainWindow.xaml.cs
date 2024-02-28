@@ -1,20 +1,7 @@
 ﻿using Dijkstra.Model;
-using ScottPlot;
-using SkiaSharp;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 
 namespace Dijkstra
@@ -25,7 +12,7 @@ namespace Dijkstra
     public partial class MainWindow : Window
     {
         public static readonly DependencyProperty LegendProperty;
-        private Program1 Program1 { get; set; }
+        private DijkstraAnaliz DijkstraAnaliz { get; set; }
         public List<string> Legend
         {
             get => (List<string>)GetValue(LegendProperty);
@@ -41,28 +28,24 @@ namespace Dijkstra
         public MainWindow()
         {
             InitializeComponent();
-            Program1 = new Program1();
-            foreach (Model.Line line in Program1.Lines)
+            DijkstraAnaliz = new DijkstraAnaliz();
+            foreach (Model.Line line in DijkstraAnaliz.Lines)
             {
                 ScottPlot.Plottables.Scatter scatter = WpfPlot1.Plot.Add.Scatter(line.Xpoints, line.Ypoints);
                 scatter.Color = ScottPlot.Color.FromHex("aa98f5");
             }
 
-            Program1.Start();
+            DijkstraAnaliz.Start();
 
-            foreach (List<string> path in Program1.Paths)
+            foreach (List<string> path in DijkstraAnaliz.Paths)
             {
                 Model.Line line = FindAllPoints(path);
                 if (line == null) return;
 
                 ScottPlot.Plottables.Scatter scatter = WpfPlot1.Plot.Add.Scatter(line.Xpoints, line.Ypoints);
-                scatter.Color = ScottPlot.Color.FromHex("c51d34");
-                //Program1.FindLineClearLenght(path);
-                //Program1.InitEdge();
-
+                scatter.Color = ScottPlot.Color.FromHex("c51d34");                
             }
-            //Legend 
-            //List<string> path1 = Program1.Path;
+            
             WpfPlot1.Refresh();
             InitializeComponent();
         }
@@ -72,7 +55,7 @@ namespace Dijkstra
             Model.Line line = new Model.Line(new double[path.Count()], new double[path.Count()], path.FirstOrDefault(), path.LastOrDefault());
             for (int i = 0; i < path.Count; i++)
             {
-                foreach (var point in Program1.Points)
+                foreach (var point in DijkstraAnaliz.Points)
                 {
                     if (point.Name.Equals(path[i]))
                     {

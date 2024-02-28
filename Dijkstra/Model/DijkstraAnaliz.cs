@@ -5,7 +5,7 @@ using System.Windows.Documents;
 
 namespace Dijkstra.Model
 {
-    class Program1
+    class DijkstraAnaliz
     {
         public List<Point> Points { get; set; }
         public List<Line> Lines { get; set; }
@@ -13,7 +13,7 @@ namespace Dijkstra.Model
         public List<string> Path { get; set; }
         public List<List<string>> Paths { get; set; }
         public Graph Graph { get; set; }
-        public Program1()
+        public DijkstraAnaliz()
         {
             Paths = new List<List<string>>();
             Points = new List<Point>() {
@@ -116,7 +116,6 @@ namespace Dijkstra.Model
             InitEdge();
 
             var dijkstra = new Dijkstra(Graph);
-            //Path = dijkstra.FindShortestPath("1", "20");
             foreach (Point point in Points)
             {
                 if (point.Name.Equals("1")) continue;
@@ -125,8 +124,6 @@ namespace Dijkstra.Model
                 FindLineClearLenght(path);
                 InitEdge();
             }
-            //Console.WriteLine(Path);
-            //Console.ReadLine();
         }
 
         public void InitEdge()
@@ -154,7 +151,6 @@ namespace Dijkstra.Model
             {
                Lines.Find(e => (e.StartPointsName == path[i] && e.EndPointsName == path[i + 1] 
                 || e.StartPointsName == path[i+1] && e.EndPointsName == path[i])).Lenght = 0;
-                //if (_line != null) _line.Lenght = 0;
             }
         }
     }
