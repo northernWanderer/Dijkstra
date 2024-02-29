@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Dijkstra.Model
+﻿namespace Dijkstra.Model
 {
-    internal class Point
+    public class Point
     {
         private double _x;
         private double _y;

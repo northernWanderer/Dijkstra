@@ -12,11 +12,13 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition />
-            
+            <RowDefinition />
+            <RowDefinition Height="Auto"/>            
         </Grid.RowDefinitions>
 
         <ScottPlot:WpfPlot  Grid.Row="0" x:Name="WpfPlot1" />
-       
+        <ScottPlot:WpfPlot  Grid.Row="1" x:Name="WpfPlot2" />
+        <TextBlock Text="{Binding ElementName=root, Path=Legend}" Grid.Row="2" HorizontalAlignment="Center" FontSize="15" />
 
     </Grid>
 </Window>

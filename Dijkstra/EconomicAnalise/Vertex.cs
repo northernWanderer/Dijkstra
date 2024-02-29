@@ -2,7 +2,7 @@
 
 namespace Dijkstra.EconomicAnalise
 {
-    internal class Vertex
+    public class Vertex
     {
         const double _costOneHourOneMV = 10;
         private double HoursOfAccident {  get; set; }
@@ -17,12 +17,13 @@ namespace Dijkstra.EconomicAnalise
             NumberOfSourse = numberOfSourse;
             Power = power;
             ConnectedLine = new List<LineAnalizer>();
-            GetCostOfAccident();
+            GetCostOfAccident(5);
         }
 
-        private void GetCostOfAccident(double hoursOfAccident)
+        public double GetCostOfAccident(double hoursOfAccident)
         {
             CostOfAccident = hoursOfAccident * _costOneHourOneMV * Power;
+            return CostOfAccident;
         }
         private void GetCostOfAccident()
         {

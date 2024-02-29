@@ -1,12 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Dijkstra.Model
 {
-    internal class Line
+    public class Line
     {
         private double _lenght;
         
