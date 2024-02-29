@@ -93,6 +93,9 @@ namespace Dijkstra
                 EconomicAnalizer.LineAnalizers = linesAnalize;
                 foreach (LineAnalizer line in linesAnalize)
                 {
+                    InitLineAnalizeSourse(linesAnalize);
+                    EconomicAnalizer.LineAnalizers = linesAnalize;
+                    int A = 5;
                     List<LineAnalizer> OnLines = EconomicAnalizer.AnalizeAccident(line, linesAnalize);
                     EconomicAnalizer.CostAllLines += line.Cost;
                     ShotAccidentCost += EconomicAnalizer.CostShotAccident;
